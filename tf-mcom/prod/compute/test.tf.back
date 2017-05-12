@@ -1,0 +1,28 @@
+resource "aws_security_group" "test" {
+  name        = "test"
+  description = "test"
+  vpc_id      = "vpc-7a020d1d"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "test" {
+    ami = "ami-6d1c2007"
+    instance_type = "t2.micro"
+    key_name = "sslobodianiu"
+    vpc_security_group_ids = ["${aws_security_group.test.id}"]
+    subnet_id = "subnet-260cc81a"
+}
+
